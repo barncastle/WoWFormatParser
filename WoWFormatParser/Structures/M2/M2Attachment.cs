@@ -7,7 +7,7 @@ namespace WoWFormatParser.Structures.M2
 {
     public class M2Attachment : IVersioned
     {
-        public GEOCOMPONENTLINKS AttachmentId;
+        public GeoComponentLink AttachmentId;
         public ushort BoneIndex;
         public ushort Unknown_0x6;
         public C3Vector Position;
@@ -15,7 +15,7 @@ namespace WoWFormatParser.Structures.M2
 
         public M2Attachment(BinaryReader br, uint build)
         {
-            AttachmentId = br.ReadEnum<GEOCOMPONENTLINKS>();
+            AttachmentId = br.ReadEnum<GeoComponentLink>();
             BoneIndex = br.ReadUInt16();
             Unknown_0x6 = br.ReadUInt16();
             Position = br.ReadStruct<C3Vector>();
@@ -23,7 +23,7 @@ namespace WoWFormatParser.Structures.M2
         }
     }
 
-    public enum GEOCOMPONENTLINKS : int
+    public enum GeoComponentLink : int
     {
         ATTACH_NONE = -1,
         ATTACH_SHIELD = 0x0,

@@ -28,6 +28,7 @@ namespace WoWFormatParser.Structures
             var _serializer = new Serializer.Serializer(options);
             _serializer.Export(fileName, this);
         }
+
         /// <summary>
         /// Returns the jsonified parsed content of the file.
         /// </summary>

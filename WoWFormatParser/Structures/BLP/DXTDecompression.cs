@@ -22,7 +22,7 @@ namespace WoWFormatParser.Structures.BLP
 {
     internal static class DXTDecompression
     {
-        public enum DXTFlags
+        public enum DXT_Flags
         {
             DXT1 = 1 << 0,
             DXT3 = 1 << 1,
@@ -30,21 +30,21 @@ namespace WoWFormatParser.Structures.BLP
             // Additional Enums not implemented :o
         }
 
-        private static void Decompress(byte[] rgba, byte[] block, int blockIndex, DXTFlags flags)
+        private static void Decompress(byte[] rgba, byte[] block, int blockIndex, DXT_Flags flags)
         {
             // get the block locations
             int colorBlockIndex = blockIndex;
 
-            if ((flags & (DXTFlags.DXT3 | DXTFlags.DXT5)) != 0)
+            if ((flags & (DXT_Flags.DXT3 | DXT_Flags.DXT5)) != 0)
                 colorBlockIndex += 8;
 
             // decompress color
-            DecompressColor(rgba, block, colorBlockIndex, (flags & DXTFlags.DXT1) != 0);
+            DecompressColor(rgba, block, colorBlockIndex, (flags & DXT_Flags.DXT1) != 0);
 
             // decompress alpha separately if necessary
-            if ((flags & DXTFlags.DXT3) != 0)
+            if ((flags & DXT_Flags.DXT3) != 0)
                 DecompressAlphaDxt3(rgba, block, blockIndex);
-            else if ((flags & DXTFlags.DXT5) != 0)
+            else if ((flags & DXT_Flags.DXT5) != 0)
                 DecompressAlphaDxt5(rgba, block, blockIndex);
         }
 
@@ -195,13 +195,13 @@ namespace WoWFormatParser.Structures.BLP
             return value;
         }
 
-        public static byte[] DecompressImage(int width, int height, byte[] data, DXTFlags flags)
+        public static byte[] DecompressImage(int width, int height, byte[] data, DXT_Flags flags)
         {
             byte[] rgba = new byte[width * height * 4];
 
             // initialise the block input
             int sourceBlock_pos = 0;
-            int bytesPerBlock = (flags & DXTFlags.DXT1) != 0 ? 8 : 16;
+            int bytesPerBlock = (flags & DXT_Flags.DXT1) != 0 ? 8 : 16;
             byte[] targetRGBA = new byte[4 * 16];
 
             // loop over blocks

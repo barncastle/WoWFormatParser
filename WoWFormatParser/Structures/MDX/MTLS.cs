@@ -23,8 +23,8 @@ namespace WoWFormatParser.Structures.MDX
     public class TexLayer
     {
         public uint Size;
-        public MDLTEXOP BlendMode;
-        public MDLGEO Flags;
+        public MDLTexOp BlendMode;
+        public MDLGeo Flags;
         public int TextureId;
         public int TextureAnimationId;
         public int CoordId;
@@ -36,8 +36,8 @@ namespace WoWFormatParser.Structures.MDX
         {
             Size = br.ReadUInt32();
 
-            BlendMode = (MDLTEXOP)br.ReadInt32();
-            Flags = (MDLGEO)br.ReadUInt32();
+            BlendMode = (MDLTexOp)br.ReadInt32();
+            Flags = (MDLGeo)br.ReadUInt32();
             TextureId = br.ReadInt32();
             TextureAnimationId = br.ReadInt32();
             CoordId = br.ReadInt32();
@@ -58,7 +58,7 @@ namespace WoWFormatParser.Structures.MDX
 
     }
 
-    public enum MDLTEXOP
+    public enum MDLTexOp
     {
         Load = 0x0,
         Transparent = 0x1,
@@ -70,7 +70,7 @@ namespace WoWFormatParser.Structures.MDX
     }
 
     [Flags]
-    public enum MDLGEO
+    public enum MDLGeo
     {
         Unshaded = 0x1,
         SphereEnvMap = 0x2,

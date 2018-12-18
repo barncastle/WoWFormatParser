@@ -6,7 +6,7 @@ namespace WoWFormatParser.Structures.MDX
     public class MDXTrack<T> where T : struct
     {
         public int Count;
-        public MDLTRACKTYPE InterpolationType;
+        public TrackType InterpolationType;
         public int GlobalSequenceId;
         public MDXKeyFrame<T>[] Keys;
 
@@ -14,7 +14,7 @@ namespace WoWFormatParser.Structures.MDX
         {
             string name = br.ReadString(4);
             Count = br.ReadInt32();
-            InterpolationType = (MDLTRACKTYPE)br.ReadUInt32();
+            InterpolationType = (TrackType)br.ReadUInt32();
             GlobalSequenceId = br.ReadInt32();
             Keys = br.ReadArray(Count, () => new MDXKeyFrame<T>(br, InterpolationType));
         }
@@ -27,11 +27,11 @@ namespace WoWFormatParser.Structures.MDX
         public T? InTangent;
         public T? OutTangent;
 
-        public MDXKeyFrame(BinaryReader br, MDLTRACKTYPE type)
+        public MDXKeyFrame(BinaryReader br, TrackType type)
         {
             Time = br.ReadUInt32();
             Value = br.ReadStruct<T>();
-            if (type > MDLTRACKTYPE.TRACK_LINEAR)
+            if (type > TrackType.Linear)
             {
                 InTangent = br.ReadStruct<T>();
                 OutTangent = br.ReadStruct<T>();
@@ -39,12 +39,11 @@ namespace WoWFormatParser.Structures.MDX
         }
     }
 
-    public enum MDLTRACKTYPE
+    public enum TrackType
     {
-        TRACK_NO_INTERP = 0x0,
-        TRACK_LINEAR = 0x1,
-        TRACK_HERMITE = 0x2,
-        TRACK_BEZIER = 0x3,
-        NUM_TRACK_TYPES = 0x4,
+        NoInterp = 0x0,
+        Linear = 0x1,
+        Hermite = 0x2,
+        Bezier = 0x3,
     }
 }

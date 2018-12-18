@@ -26,7 +26,7 @@ namespace WoWFormatParser.Structures.Common
             {
                 double w = 1.0 - len;
                 if (w >= 0)
-                    vector.W = (float)(Math.Sqrt(w));
+                    vector.W = (float)Math.Sqrt(w);
             }
 
             return vector;

@@ -33,7 +33,7 @@ namespace WoWFormatParser.Structures.MDX
         public float BoundsRadius;
         public int SelectionGroup;
         public int GeosetIndex;
-        public MDLGEOSECTIONFLAGS Flags;
+        public GeosSection_Flags Flags;
         public int NumVertices;
         public int NumPrimitiveTypes;
         public int NumPrimitiveIndices;
@@ -47,9 +47,7 @@ namespace WoWFormatParser.Structures.MDX
             BoundsRadius = br.ReadSingle();
             SelectionGroup = br.ReadInt32();
             GeosetIndex = br.ReadInt32();
-
-            // TODO MDLGEOSECTIONFLAGS
-            Flags = (MDLGEOSECTIONFLAGS)br.ReadInt32();
+            Flags = (GeosSection_Flags)br.ReadInt32();
 
             br.AssertTag("PVTX");
             NumVertices = br.ReadInt32(); // count of M2Vertex
@@ -67,6 +65,7 @@ namespace WoWFormatParser.Structures.MDX
     {
         public MDLVERTEX[] Vertices;
         public int PrimitiveType;
+        public int Unknown_0x08;
         public int NumPrimitiveIndices;
         public int MaxPrimitiveVertex;
         public CVertex[] PrimitiveVertices;
@@ -76,7 +75,7 @@ namespace WoWFormatParser.Structures.MDX
             Vertices = br.ReadStructArray<MDLVERTEX>(numVertices);
 
             PrimitiveType = br.ReadInt32();  // 0x3 = Triangle, 
-            br.ReadInt32();
+            Unknown_0x08 = br.ReadInt32(); // always 0
 
             NumPrimitiveIndices = br.ReadInt32(); // matches MDLGEOSECTION
             MaxPrimitiveVertex = br.ReadInt32();
@@ -105,10 +104,10 @@ namespace WoWFormatParser.Structures.MDX
     }
 
     [Flags]
-    public enum MDLGEOSECTIONFLAGS : uint
+    public enum GeosSection_Flags : uint
     {
         Unselectable = 1,
-        Unused = 2,
+        Unknown_0x2 = 2,
         Unknown_0x4 = 4,
         Unknown_0x8 = 8,
         Unknown_0x10 = 16,

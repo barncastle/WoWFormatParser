@@ -9,9 +9,9 @@ namespace WoWFormatParser
     public class Options
     {
         /// <summary>
-        /// What information to be returned.
+        /// Determines what information to be parsed.
         /// </summary>
-        public ExportType ExportType { get; set; } = ExportType.Data;
+        public ParseMode ParseMode { get; set; } = ParseMode.Data;
         /// <summary>
         /// Directories that will be excluded.
         /// </summary>

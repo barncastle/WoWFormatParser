@@ -3,7 +3,7 @@
 namespace WoWFormatParser
 {
     [Flags]
-    public enum ExportType
+    public enum ParseMode
     {
         /// <summary>
         /// Parsed Structure Data.

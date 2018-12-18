@@ -8,18 +8,18 @@ namespace WoWFormatParser.Structures.MDX
     {
         public int ReplaceableId;
         public string Image;
-        public TEXFLAGS Flags;
+        public Tex_Flags Flags;
 
         public TEXS(BinaryReader br)
         {
             ReplaceableId = br.ReadInt32();
             Image = br.ReadString(260).TrimEnd('\0');
-            Flags = (TEXFLAGS)br.ReadUInt32();
+            Flags = (Tex_Flags)br.ReadUInt32();
         }
     }
 
     [Flags]
-    public enum TEXFLAGS : uint
+    public enum Tex_Flags : uint
     {
         WrapWidth = 1,
         WrapHeight = 2

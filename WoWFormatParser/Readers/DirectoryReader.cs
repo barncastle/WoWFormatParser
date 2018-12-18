@@ -80,7 +80,7 @@ namespace WoWFormatParser.Readers
             var fileReader = new FileReader(_build, _options);
             var files = Directory.EnumerateFiles(_directory, searchPattern, SearchOption.AllDirectories);
 
-            bool includeFileInfo = _options.ExportType.HasFlag(ExportType.FileInfo);
+            bool includeFileInfo = _options.ParseMode.HasFlag(ParseMode.FileInfo);
             string localDir = _directory + Path.DirectorySeparatorChar;
 
             ConcurrentBag<IFormat> resultSet = new ConcurrentBag<IFormat>();

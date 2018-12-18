@@ -9,14 +9,14 @@ namespace WoWFormatParser.Structures.M2
     public class M2Particle : IVersioned
     {
         public int ParticleId;
-        public uint Flags;
+        public Particle_Flags Flags;
         public C3Vector Position;
         public ushort BoneIndex;
         public ushort TextureIndex;
         public string GeometryMdl;
         public string RecursionMdl;
         public ushort BlendMode;
-        public PARTICLE_EMITTER_TYPE EmitterType;
+        public EmitterType EmitterType;
         public ParticleType ParticleType;
         public CellType CellType;
         public short PriorityPlane;
@@ -75,14 +75,14 @@ namespace WoWFormatParser.Structures.M2
         public M2Particle(BinaryReader br, uint build)
         {
             ParticleId = br.ReadInt32();
-            Flags = br.ReadUInt32();
+            Flags = (Particle_Flags)br.ReadUInt32();
             Position = br.ReadStruct<C3Vector>();
             BoneIndex = br.ReadUInt16();
             TextureIndex = br.ReadUInt16();
             GeometryMdl = br.ReadM2Array<byte>(build)?.AsString();
             RecursionMdl = br.ReadM2Array<byte>(build)?.AsString();
             BlendMode = br.ReadUInt16();
-            EmitterType = br.ReadEnum<PARTICLE_EMITTER_TYPE>();
+            EmitterType = br.ReadEnum<EmitterType>();
             ParticleType = br.ReadEnum<ParticleType>();
             CellType = br.ReadEnum<CellType>();
             PriorityPlane = br.ReadInt16();
@@ -114,7 +114,7 @@ namespace WoWFormatParser.Structures.M2
             TailUVAnimStart = br.ReadUInt16();
             TailUVAnimEnd = br.ReadUInt16();
             TailDecayUVAnimStart = br.ReadUInt16();
-            TailDecayUVAnimEnd = br.ReadUInt16(); // ?
+            TailDecayUVAnimEnd = br.ReadUInt16(); // unverified
             TailLength = br.ReadSingle();
             TwinkleFPS = br.ReadSingle();
             TwinklePercent = br.ReadSingle();
@@ -140,7 +140,7 @@ namespace WoWFormatParser.Structures.M2
         }
     }
 
-    public enum PARTICLE_EMITTER_TYPE : ushort
+    public enum EmitterType : ushort
     {
         PET_BASE = 0x0,
         PET_PLANE = 0x1,
@@ -164,7 +164,7 @@ namespace WoWFormatParser.Structures.M2
     }
 
     [Flags]
-    public enum ParticleFlags
+    public enum Particle_Flags : uint
     {
         Unshaded = 0x1,
         SortPrimitivesFarZ = 0x2,

@@ -9,7 +9,7 @@ namespace WoWFormatParser.Tests
     [TestClass]
     public class Tests
     {
-        const string Directory = @"C:\Users\TomSpearman\Downloads\WoW.Alpha.ANi\WoW.Alpha.ANi\WoW";
+        const string Directory = @"E:\World of Warcraft 0.5.3";
         readonly WoWBuild Build = WoWBuild.Parse("0.5.3.3368");
 
 
@@ -52,9 +52,9 @@ namespace WoWFormatParser.Tests
             var options = new Options()
             {
                 IncludeUnsupportedAndInvalidFiles = true,
-                ExportType = ExportType.Both
+                ParseMode = ParseMode.Both
             };
-            options.SerializerOptions.ExportType = ExportType.Both;
+            options.SerializerOptions.ParseMode = ParseMode.Both;
             options.SerializerOptions.IgnoreNullOrEmpty = true;
             options.SerializerOptions.RenameIgnoreResolver.RenameProperty(typeof(Structures.Meta.DBCMeta), "Name", "NameOverrideTest");
 
@@ -89,7 +89,7 @@ namespace WoWFormatParser.Tests
 
             var options = new Options()
             {
-                ExportType = ExportType.Both,
+                ParseMode = ParseMode.Both,
                 IncludeUnsupportedAndInvalidFiles = true,
             };
             //options.IgnoredFormats.Add(SupportedFormats.ADT);
@@ -116,6 +116,7 @@ namespace WoWFormatParser.Tests
 
             //var json = test.ToJson();
         }
+
 
         private class TestEmptyClass : Structures.SimpleFormat
         {

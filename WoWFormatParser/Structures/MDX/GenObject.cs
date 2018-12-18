@@ -11,7 +11,7 @@ namespace WoWFormatParser.Structures.MDX
         public string Name;
         public int ObjectId;
         public int ParentId;
-        public GENOBJECTFLAGS Flags;
+        public Flags Flags;
 
         public MDXTrack<C3Vector> TranslationKeys;
         public MDXTrack<C4QuaternionCompressed> RotationKeys;
@@ -23,7 +23,7 @@ namespace WoWFormatParser.Structures.MDX
             Name = br.ReadString(80).TrimEnd('\0');
             ObjectId = br.ReadInt32();
             ParentId = br.ReadInt32();
-            Flags = (GENOBJECTFLAGS)br.ReadUInt32();
+            Flags = (GenObj_Flags)br.ReadUInt32();
 
             while (true)
             {
@@ -41,7 +41,7 @@ namespace WoWFormatParser.Structures.MDX
     }
 
     [Flags]
-    public enum GENOBJECTFLAGS : uint
+    public enum GenObj_Flags : uint
     {
         DontInheritTranslation = 0x00000001,
         DontInheritScaling = 0x00000002,

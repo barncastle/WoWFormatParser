@@ -15,7 +15,7 @@ namespace WoWFormatParser.Structures.ADT
         public MCLY(BinaryReader br)
         {
             TextureId = br.ReadUInt32();
-            Props = br.ReadEnum<MCLY_FLAGS>();
+            Props = br.ReadEnum<MCLY_Flags>();
             OffsAlpha = br.ReadUInt32();
             EffectId = br.ReadInt32();
         }
@@ -24,7 +24,7 @@ namespace WoWFormatParser.Structures.ADT
     }
 
     [Flags]
-    public enum MCLY_FLAGS : uint
+    public enum MCLY_Flags : uint
     {
         None = 0,
         Animated45RotationPerTick = 0x001,

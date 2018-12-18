@@ -10,9 +10,9 @@ namespace WoWFormatParser.Serializer
         /// </summary>
         public bool Indent { get; set; } = true;
         /// <summary>
-        /// What information to be serialized.
+        /// Determines what information is to be serialized.
         /// </summary>
-        public ExportType ExportType { get; set; } = ExportType.Data;
+        public ParseMode ParseMode { get; set; } = ParseMode.Data;
         /// <summary>
         /// What compression, if any, to be applied.
         /// <para>Compressed JSON is base64 encoded.</para>
@@ -38,17 +38,10 @@ namespace WoWFormatParser.Serializer
             if (!string.IsNullOrWhiteSpace(OutputDirectory))
                 System.IO.Directory.CreateDirectory(OutputDirectory);
 
-            if (!ExportType.HasFlag(ExportType.FileInfo))
+            if (!ParseMode.HasFlag(ParseMode.FileInfo))
                 RenameIgnoreResolver.IgnoreProperty(typeof(IFormat), "FileInfo");
             else
                 RenameIgnoreResolver.RemoveIgnoreProperty(typeof(IFormat), "FileInfo");
         }
-    }
-
-    public enum CompressionFormat
-    {
-        None,
-        GZip,
-        Brotli
     }
 }

@@ -120,7 +120,7 @@ namespace WoWFormatParser.Structures.BLP
                 case ColorFileFormat.Palette:
                     return GetPictureUncompressedByteArray(w, h, data);
                 case ColorFileFormat.DXT:
-                    DXTDecompression.DXTFlags flag = (AlphaSize > 1) ? ((PreferredFormat == BLPPixelFormat.DXT5) ? DXTDecompression.DXTFlags.DXT5 : DXTDecompression.DXTFlags.DXT3) : DXTDecompression.DXTFlags.DXT1;
+                    DXTDecompression.DXT_Flags flag = (AlphaSize > 1) ? ((PreferredFormat == BLPPixelFormat.DXT5) ? DXTDecompression.DXT_Flags.DXT5 : DXTDecompression.DXT_Flags.DXT3) : DXTDecompression.DXT_Flags.DXT1;
                     return DXTDecompression.DecompressImage(w, h, data, flag);
                 case ColorFileFormat.ARGB8888:
                     return data;

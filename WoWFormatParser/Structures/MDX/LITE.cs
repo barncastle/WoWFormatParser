@@ -7,7 +7,7 @@ namespace WoWFormatParser.Structures.MDX
     public class LITE : GenObject
     {
         public uint Size;
-        public LIGHT_TYPE Type;
+        public LightType Type;
         public float AttenuationStart;
         public float AttenuationEnd;
         public CBGR Color;
@@ -27,7 +27,7 @@ namespace WoWFormatParser.Structures.MDX
             Size = br.ReadUInt32();
             Load(br);
 
-            Type = (LIGHT_TYPE)br.ReadInt32();
+            Type = (LightType)br.ReadInt32();
             AttenuationStart = br.ReadSingle();
             AttenuationEnd = br.ReadSingle();
             Color = br.ReadStruct<CBGR>();
@@ -54,7 +54,7 @@ namespace WoWFormatParser.Structures.MDX
         }
     }
 
-    public enum LIGHT_TYPE
+    public enum LightType
     {
         Omni = 0x0,
         Direct = 0x1,

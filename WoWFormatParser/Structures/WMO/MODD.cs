@@ -30,9 +30,9 @@ namespace WoWFormatParser.Structures.WMO
     public enum MODD_Flags : byte
     {
         None = 0,
-        AcceptProjTex = 1,
-        Unknown_0x2 = 2,
-        Unknown_0x4 = 4,
-        Unknown_0x8 = 8,
+        AcceptProjTex = 0x1,
+        Unknown_0x2 = 0x2,
+        Unknown_0x4 = 0x4,
+        Unknown_0x8 = 0x8,
     }
 }

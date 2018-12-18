@@ -10,7 +10,7 @@ namespace WoWFormatParser.Structures.MDX
         public uint Size;
 
         public int EmitterSize;
-        public PARTICLE_EMITTER_TYPE EmitterType; //PARTICLE_EMITTER_TYPE
+        public EmitterType EmitterType; //PARTICLE_EMITTER_TYPE
         public float Speed;
         public float Variation;
         public float Latitude;
@@ -23,7 +23,7 @@ namespace WoWFormatParser.Structures.MDX
         public float Width;
         public int Rows;
         public int Cols;
-        public PARTICLE_TYPE ParticleType; //PARTICLE_TYPE	
+        public CellType ParticleType; //PARTICLE_TYPE	
         public float TailLength;
         public float MiddleTime;
         public CBGR StartColor;
@@ -47,7 +47,7 @@ namespace WoWFormatParser.Structures.MDX
         public uint TailDecayUVAnimStart;
         public uint TailDecayUVAnimEnd;
         public uint TailDecayUVAnimRepeat;
-        public PARTICLE_BLEND_MODE BlendMode;
+        public BlendMode BlendMode;
         public uint TextureId;
         public int PriorityPlane;
         public uint ReplaceableId;
@@ -90,7 +90,7 @@ namespace WoWFormatParser.Structures.MDX
             Load(br);
 
             EmitterSize = br.ReadInt32();
-            EmitterType = (PARTICLE_EMITTER_TYPE)br.ReadUInt32();
+            EmitterType = (EmitterType)br.ReadUInt32();
             Speed = br.ReadSingle();
             Variation = br.ReadSingle();
             Latitude = br.ReadSingle();
@@ -103,7 +103,7 @@ namespace WoWFormatParser.Structures.MDX
             Width = br.ReadSingle();
             Rows = br.ReadInt32();
             Cols = br.ReadInt32();
-            ParticleType = (PARTICLE_TYPE)br.ReadUInt32();
+            ParticleType = (CellType)br.ReadUInt32();
             TailLength = br.ReadSingle();
             MiddleTime = br.ReadSingle();
             StartColor = br.ReadStruct<CBGR>();
@@ -127,7 +127,7 @@ namespace WoWFormatParser.Structures.MDX
             TailDecayUVAnimStart = br.ReadUInt32();
             TailDecayUVAnimEnd = br.ReadUInt32();
             TailDecayUVAnimRepeat = br.ReadUInt32();
-            BlendMode = (PARTICLE_BLEND_MODE)br.ReadUInt32();
+            BlendMode = (BlendMode)br.ReadUInt32();
             TextureId = br.ReadUInt32();
             PriorityPlane = br.ReadInt32();
             ReplaceableId = br.ReadUInt32();
@@ -175,7 +175,7 @@ namespace WoWFormatParser.Structures.MDX
         }
     }
 
-    public enum PARTICLE_EMITTER_TYPE : uint
+    public enum EmitterType : uint
     {
         Base = 0x0,
         Plane = 0x1,
@@ -183,7 +183,7 @@ namespace WoWFormatParser.Structures.MDX
         Spline = 0x3,
     }
 
-    public enum PARTICLE_BLEND_MODE : uint
+    public enum BlendMode : uint
     {
         Blend = 0x0,
         Add = 0x1,
@@ -193,7 +193,7 @@ namespace WoWFormatParser.Structures.MDX
     }
 
     [Flags]
-    public enum PARTICLE_TYPE : uint
+    public enum CellType : uint
     {
         Head = 0x0,
         Tail = 0x1,

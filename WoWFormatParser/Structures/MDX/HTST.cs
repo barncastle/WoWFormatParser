@@ -7,7 +7,7 @@ namespace WoWFormatParser.Structures.MDX
     public class HTST : GenObject
     {
         public uint Size;
-        public GEOM_SHAPE Type;
+        public GeomShape Type;
         public CAaBox? Box;
         public CCylinder? Cylinder;
         public CSphere? Sphere;
@@ -18,18 +18,18 @@ namespace WoWFormatParser.Structures.MDX
             Size = br.ReadUInt32();
             Load(br);
 
-            Type = (GEOM_SHAPE)br.ReadByte();
+            Type = (GeomShape)br.ReadByte();
             switch (Type)
             {
-                case GEOM_SHAPE.Box: Box = br.ReadStruct<CAaBox>(); break;
-                case GEOM_SHAPE.Cylinder: Cylinder = br.ReadStruct<CCylinder>(); break;
-                case GEOM_SHAPE.Plane: Plane = br.ReadStruct<CPlane>(); break;
-                case GEOM_SHAPE.Sphere: Sphere = br.ReadStruct<CSphere>(); break;
+                case GeomShape.Box: Box = br.ReadStruct<CAaBox>(); break;
+                case GeomShape.Cylinder: Cylinder = br.ReadStruct<CCylinder>(); break;
+                case GeomShape.Plane: Plane = br.ReadStruct<CPlane>(); break;
+                case GeomShape.Sphere: Sphere = br.ReadStruct<CSphere>(); break;
             }
         }
     }
 
-    public enum GEOM_SHAPE : byte
+    public enum GeomShape : byte
     {
         Box = 0x0,
         Cylinder = 0x1,

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
 using WoWFormatParser.Archives.MPQ;
 using WoWFormatParser.Helpers;
 using WoWFormatParser.Structures;
@@ -118,14 +117,14 @@ namespace WoWFormatParser.Readers
                 // validate filesize limit
                 if (_options.MaxFileSize > 0 && stream.Length > _options.MaxFileSize)
                     return null;
-                
+
                 Structures.Meta.FileInfo entry = new Structures.Meta.FileInfo()
                 {
                     Build = _build.Build,
                     Name = filename.WoWNormalize()
                 };
 
-                if (_options.ExportType.HasFlag(ExportType.FileInfo))
+                if (_options.ParseMode.HasFlag(ParseMode.FileInfo))
                 {
                     entry.Checksum = stream.GetMd5Hash();
                     if (string.IsNullOrWhiteSpace(entry.Checksum) || entry.Checksum == EMPTY_CHECKSUM)

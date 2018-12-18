@@ -25,8 +25,8 @@ namespace WoWFormatParser
             Build = build;
             _options = options;
 
-            _readData = _options.ExportType.HasFlag(ExportType.Data);
-            _readFileInfo = _options.ExportType.HasFlag(ExportType.FileInfo);
+            _readData = _options.ParseMode.HasFlag(ParseMode.Data);
+            _readFileInfo = _options.ParseMode.HasFlag(ParseMode.FileInfo);
 
 
             // create referenced readers
