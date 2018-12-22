@@ -11,7 +11,7 @@ namespace WoWFormatParser.Structures.MDX
         public string Name;
         public int ObjectId;
         public int ParentId;
-        public Flags Flags;
+        public GenObj_Flags Flags;
 
         public MDXTrack<C3Vector> TranslationKeys;
         public MDXTrack<C4QuaternionCompressed> RotationKeys;
