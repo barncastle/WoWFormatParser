@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace WoWFormatParser.Serializer
+﻿namespace WoWFormatParser.Serializer
 {
     public enum CompressionFormat
     {

@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
 using Newtonsoft.Json;
 using WoWFormatParser.Helpers;
-using WoWFormatParser.Structures.ADT;
 using WoWFormatParser.Structures.Interfaces;
 
 namespace WoWFormatParser.Structures.WDT

@@ -1,5 +1,4 @@
-﻿using System;
-using WoWFormatParser.Structures.Interfaces;
+﻿using WoWFormatParser.Structures.Interfaces;
 
 namespace WoWFormatParser.Structures.M2
 {
