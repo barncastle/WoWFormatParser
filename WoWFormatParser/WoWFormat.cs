@@ -81,6 +81,7 @@
         /// World Liquid.
         /// </summary>
         WLW = WLM,
+        WLL = WLM,
         /// <summary>
         /// World Model Object.
         /// </summary>

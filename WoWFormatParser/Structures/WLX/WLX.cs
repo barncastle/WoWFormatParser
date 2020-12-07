@@ -9,7 +9,7 @@ namespace WoWFormatParser.Structures.WLX
         public string Magic;
         public string Version;
         public ushort Flags;
-        public ushort Unk_0xA;
+        public uint LiquidType;
         public int Block_Count_1;
         public WLX_Block[] Blocks_1;
         public int Block_Count_2;
@@ -19,9 +19,9 @@ namespace WoWFormatParser.Structures.WLX
         public WLX(BinaryReader br)
         {
             Magic = br.ReadString(4).FastReverse();
+            Version = br.ReadUInt16().ToString();
             Flags = br.ReadUInt16();
-            Version = br.ReadBytes(4).ToHex().TrimStart('0');
-            Unk_0xA = br.ReadUInt16();
+            LiquidType = br.ReadUInt32();
 
             Block_Count_1 = br.ReadInt32();
             if (Block_Count_1 > 0)
@@ -31,7 +31,7 @@ namespace WoWFormatParser.Structures.WLX
             if (Block_Count_2 > 0)
                 Blocks_2 = br.ReadArray(Block_Count_2, () => new WLX_Block_2(br));
 
-            if ((Flags & 1) == 1)
+            if (Version != "0")
                 Unk_0x12 = br.ReadByte();
 
             if (br.BaseStream.Position != br.BaseStream.Length)
