@@ -15,7 +15,7 @@ namespace WoWFormatParser.Helpers
             get => BaseStream.Position - Start;
             set
             {
-                var offset = BaseStream.Position + value;
+                var offset = Start + value;
                 if (offset < Start || offset > End)
                     throw new ArgumentOutOfRangeException(nameof(value));
 
