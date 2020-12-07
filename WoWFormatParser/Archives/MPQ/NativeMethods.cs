@@ -271,13 +271,13 @@ namespace WoWFormatParser.Archives.MPQ.Native
         #endregion
     }
 
-#pragma warning disable 0169, 0649
+#pragma warning disable 0169, 0649, IDE0051
     internal struct SFILE_CREATE_MPQ
     {
         public uint cbSize;
         public uint dwMpqVersion;
-        private IntPtr pvUserData;
-        private uint cbUserData;
+        private readonly IntPtr pvUserData;
+        private readonly uint cbUserData;
         public uint dwStreamFlags;
         public uint dwFileFlags1;
         public uint dwFileFlags2;
@@ -327,6 +327,6 @@ namespace WoWFormatParser.Archives.MPQ.Native
         public uint dwFileKey;
         public uint dwFilePos;
     }
-#pragma warning restore 0169, 0649
+#pragma warning restore 0169, 0649, IDE0051
 
 }

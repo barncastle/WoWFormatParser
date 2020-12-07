@@ -9,8 +9,8 @@ namespace WoWFormatParser.Structures.ADT
         public uint Offset;
         public uint Size;
 #pragma warning disable 0169
-        private uint Flags;
-        private uint Pad;
+        private readonly uint Flags;
+        private readonly uint Pad;
 #pragma warning restore 0169
 
         public override string ToString() => $"Offset: {Offset}, Size: {Size}";

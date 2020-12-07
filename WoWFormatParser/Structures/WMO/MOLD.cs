@@ -8,6 +8,6 @@ namespace WoWFormatParser.Structures.WMO
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32768)]
         public byte[] Texels;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        private byte[] Pad;
+        private readonly byte[] Pad;
     }
 }

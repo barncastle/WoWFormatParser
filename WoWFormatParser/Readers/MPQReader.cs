@@ -18,17 +18,15 @@ namespace WoWFormatParser.Readers
         const string LISTFILE_NAME = "(ListFile)";
         private readonly string DATA_DIRECTORY = Path.DirectorySeparatorChar + "DATA" + Path.DirectorySeparatorChar;
 
-        private readonly string _directory;
         private readonly Options _options;
         private readonly WoWBuild _build;
         private readonly FileReader _fileReader;
         private readonly string[] _patchArchives;
 
-        private ConcurrentDictionary<string, MpqArchive> _archiveLocks;
+        private readonly ConcurrentDictionary<string, MpqArchive> _archiveLocks;
 
-        public MPQReader(string directory, Options options, WoWBuild build, IEnumerable<string> patchArchives)
+        public MPQReader(Options options, WoWBuild build, IEnumerable<string> patchArchives)
         {
-            _directory = directory;
             _options = options;
             _build = build;
             _fileReader = new FileReader(_build, _options);
@@ -108,36 +106,34 @@ namespace WoWFormatParser.Readers
         /// <returns></returns>
         private IFormat ReadFileImpl(MpqArchive mpq, string filename, string overridename = null)
         {
-            using (var md5 = MD5.Create())
-            using (var stream = mpq.OpenFile(overridename ?? filename))
+            using var md5 = MD5.Create();
+            using var stream = mpq.OpenFile(overridename ?? filename);
+            if (!stream.CanRead || stream.Length <= 1)
+                return null;
+
+            // validate filesize limit
+            if (_options.MaxFileSize > 0 && stream.Length > _options.MaxFileSize)
+                return null;
+
+            Structures.Meta.FileInfo entry = new Structures.Meta.FileInfo()
             {
-                if (!stream.CanRead || stream.Length <= 1)
-                    return null;
+                Build = _build.Build,
+                Name = filename.WoWNormalize()
+            };
 
-                // validate filesize limit
-                if (_options.MaxFileSize > 0 && stream.Length > _options.MaxFileSize)
-                    return null;
-
-                Structures.Meta.FileInfo entry = new Structures.Meta.FileInfo()
-                {
-                    Build = _build.Build,
-                    Name = filename.WoWNormalize()
-                };
-
-                if (_options.ParseMode.HasFlag(ParseMode.FileInfo))
-                {
-                    entry.Checksum = stream.GetMd5Hash();
-                    if (string.IsNullOrWhiteSpace(entry.Checksum) || entry.Checksum == EMPTY_CHECKSUM)
-                        entry.Checksum = md5.ComputeHash(stream).ToChecksum();
-                    entry.Created = stream.CreatedDate;
-                    entry.Size = (uint)stream.Length;
-                }
-
-                stream.FileName = filename;
-
-                using (var bs = new BufferedStream(stream))
-                    return _fileReader.Read(bs, entry);
+            if (_options.ParseMode.HasFlag(ParseMode.FileInfo))
+            {
+                entry.Checksum = stream.GetMd5Hash();
+                if (string.IsNullOrWhiteSpace(entry.Checksum) || entry.Checksum == EMPTY_CHECKSUM)
+                    entry.Checksum = md5.ComputeHash(stream).ToChecksum();
+                entry.Created = stream.CreatedDate;
+                entry.Size = (uint)stream.Length;
             }
+
+            stream.FileName = filename;
+
+            using var bs = new BufferedStream(stream);
+            return _fileReader.Read(bs, entry);
         }
 
 
@@ -149,7 +145,7 @@ namespace WoWFormatParser.Readers
         private string FormatAlphaFilename(string archivename)
         {
             int index = archivename.IndexOf(DATA_DIRECTORY, StringComparison.OrdinalIgnoreCase);
-            return archivename.Substring(index + DATA_DIRECTORY.Length);
+            return archivename[(index + DATA_DIRECTORY.Length)..];
         }
 
         /// <summary>
@@ -160,7 +156,7 @@ namespace WoWFormatParser.Readers
         private bool IsLikleyPreAlpha(string archivename)
         {
             string extension = Path.GetFileNameWithoutExtension(archivename).GetExtensionExt();
-            if (_build.Build < 3529 && Enum.TryParse(typeof(WoWFormat), extension, true, out var dump))
+            if (_build.Build < 3529 && Enum.TryParse(typeof(WoWFormat), extension, true, out _))
                 return true;
 
             return false;
@@ -196,15 +192,13 @@ namespace WoWFormatParser.Readers
         /// <returns></returns>
         private IEnumerable<string> FilterListFile(MpqArchive mpq, string searchPattern)
         {
-            using (var file = mpq.OpenFile(LISTFILE_NAME))
-            using (var sr = new StreamReader(file))
+            using var file = mpq.OpenFile(LISTFILE_NAME);
+            using var sr = new StreamReader(file);
+            while (!sr.EndOfStream)
             {
-                while (!sr.EndOfStream)
-                {
-                    string filename = sr.ReadLine();
-                    if (!Utils.IsInvalidFile(filename, _options, searchPattern))
-                        yield return filename;
-                }
+                string filename = sr.ReadLine();
+                if (!Utils.IsInvalidFile(filename, _options, searchPattern))
+                    yield return filename;
             }
         }
 

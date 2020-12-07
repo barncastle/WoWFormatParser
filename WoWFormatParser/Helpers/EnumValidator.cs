@@ -8,11 +8,11 @@ namespace WoWFormatParser.Helpers
 {
     public static class EnumValidator
     {
-        private static bool DoValidation = false;
+        private const bool DoValidation = false;
 
-        private static ConcurrentDictionary<Type, EnumInfo> _enumCache = new ConcurrentDictionary<Type, EnumInfo>();
+        private static readonly ConcurrentDictionary<Type, EnumInfo> _enumCache = new ConcurrentDictionary<Type, EnumInfo>();
 
-        private static Dictionary<Type, Func<BinaryReader, long>> _valueConverter = new Dictionary<Type, Func<BinaryReader, long>>()
+        private static readonly Dictionary<Type, Func<BinaryReader, long>> _valueConverter = new Dictionary<Type, Func<BinaryReader, long>>()
         {
             { typeof(byte), (br) => br.ReadByte() },
             { typeof(sbyte), (br) => br.ReadSByte() },
@@ -41,10 +41,10 @@ namespace WoWFormatParser.Helpers
                 throw new Exception($"Value exceeds maximum {name} {value}");
 
             if (info.HasFlags && !GetFlags(value).All(x => info.Values.Contains(x)))
-                throw new Exception($"Missing flag {name} 0x{value.ToString("X")}");
+                throw new Exception($"Missing flag {name} 0x{value:X}");
 
             if (!info.HasFlags && !info.Values.Contains(value))
-                throw new Exception($"Missing value {name} 0x{value.ToString("X")}");
+                throw new Exception($"Missing value {name} 0x{value:X}");
         }
 
         private static EnumInfo GetOrCreate<T>() where T : struct, IConvertible

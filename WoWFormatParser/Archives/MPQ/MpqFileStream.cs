@@ -9,7 +9,7 @@ namespace WoWFormatParser.Archives.MPQ
     public class MpqFileStream : Stream
     {
         private MpqFileSafeHandle _handle;
-        private FileAccess _accessType;
+        private readonly FileAccess _accessType;
         private MpqArchive _owner;
 
         public string FileName { get; set; }
@@ -99,12 +99,12 @@ namespace WoWFormatParser.Archives.MPQ
             uint read;
             fixed (byte* pb = &buffer[offset])
             {
-                NativeOverlapped overlapped = default(NativeOverlapped);
+                NativeOverlapped overlapped = default;
                 success = NativeMethods.SFileReadFile(_handle, new IntPtr(pb), unchecked((uint)count), out read, ref overlapped);
             }
 
-            if (!success)
-                throw new Exception("Unable to read file");
+            //if (!success)
+            //    throw new Exception("Unable to read file");
 
             return unchecked((int)read);
         }

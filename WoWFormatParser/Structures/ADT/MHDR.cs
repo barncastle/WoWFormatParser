@@ -15,7 +15,7 @@ namespace WoWFormatParser.Structures.ADT
 
 #pragma warning disable 0169
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 36)]
-        private byte[] pad;
+        private readonly byte[] pad;
 #pragma warning restore 0169
     }
 }

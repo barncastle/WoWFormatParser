@@ -14,39 +14,37 @@ namespace WoWFormatParser.Structures.Meta
 
         public TOCMeta(string name, uint build, Stream stream)
         {
-            using (var sr = new StreamReader(stream))
+            using var sr = new StreamReader(stream);
+            FileName = name;
+            Build = build;
+
+            while (!sr.EndOfStream)
             {
-                FileName = name;
-                Build = build;
+                string line = sr.ReadLine();
+                string[] parts = line.Split(new char[] { ':' }, 2);
 
-                while (!sr.EndOfStream)
+                if (parts.Length == 2)
                 {
-                    string line = sr.ReadLine();
-                    string[] parts = line.Split(new char[] { ':' }, 2);
-
-                    if (parts.Length == 2)
+                    switch (parts[0].Trim().ToLower())
                     {
-                        switch (parts[0].Trim().ToLower())
-                        {
-                            case "## author":
-                                Author = parts[1].Trim();
-                                break;
-                            case "## title":
-                                Title = parts[1].Trim();
-                                break;
-                            case "## interface":
-                                Interface = parts[1].Trim();
-                                break;
-                            case "## version":
-                                Version = parts[1].Trim();
-                                break;
-                            case "## loadondemand":
-                                LoadOnDemand = (parts[1].Trim() == "1");
-                                break;
-                            case "## notes":
-                                Notes = parts[1].Trim();
-                                break;
-                        }
+                        case "## author":
+                            Author = parts[1].Trim();
+                            break;
+                        case "## title":
+                            Title = parts[1].Trim();
+                            break;
+                        case "## interface":
+                            Interface = parts[1].Trim();
+                            break;
+                        case "## version":
+                            Version = parts[1].Trim();
+                            break;
+                        case "## loadondemand":
+                            LoadOnDemand = (parts[1].Trim() == "1");
+                            break;
+                        case "## notes":
+                            Notes = parts[1].Trim();
+                            break;
                     }
                 }
             }

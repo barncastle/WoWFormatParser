@@ -98,25 +98,23 @@ namespace WoWFormatParser.Readers
                 if (Utils.IsInvalidFile(filename, _options))
                     return;
 
-                using (var md5 = MD5.Create())
-                using (var stream = File.OpenRead(file))
-                using (var bs = new BufferedStream(stream))
+                using var md5 = MD5.Create();
+                using var stream = File.OpenRead(file);
+                using var bs = new BufferedStream(stream);
+                Structures.Meta.FileInfo entry = new Structures.Meta.FileInfo()
                 {
-                    Structures.Meta.FileInfo entry = new Structures.Meta.FileInfo()
-                    {
-                        Build = _build.Build,
-                        Name = filename
-                    };
+                    Build = _build.Build,
+                    Name = filename
+                };
 
-                    if (includeFileInfo)
-                    {
-                        entry.Checksum = md5.ComputeHash(stream).ToChecksum();
-                        entry.Created = Utils.GetLocalFileCreated(filename);
-                        entry.Size = (uint)stream.Length;
-                    }
-
-                    resultSet.Add(fileReader.Read(bs, entry));
+                if (includeFileInfo)
+                {
+                    entry.Checksum = md5.ComputeHash(stream).ToChecksum();
+                    entry.Created = Utils.GetLocalFileCreated(filename);
+                    entry.Size = (uint)stream.Length;
                 }
+
+                resultSet.Add(fileReader.Read(bs, entry));
             });
 
             return resultSet;

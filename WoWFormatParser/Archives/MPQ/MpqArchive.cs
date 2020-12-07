@@ -13,15 +13,18 @@ namespace WoWFormatParser.Archives.MPQ
         public readonly string FilePath;
 
         private MpqArchiveSafeHandle _handle;
-        private ConcurentSet<MpqFileStream> _openFiles = new ConcurentSet<MpqFileStream>();
+        private ConcurentSet<MpqFileStream> _openFiles;
         private readonly FileAccess _accessType;
-        private List<MpqArchiveCompactingEventHandler> _compactCallbacks = new List<MpqArchiveCompactingEventHandler>();
+        private readonly List<MpqArchiveCompactingEventHandler> _compactCallbacks;
         private SFILE_COMPACT_CALLBACK _compactCallback;
 
         #region Constructors / Factories
         public MpqArchive(string filePath, FileAccess accessType)
         {
             FilePath = filePath;
+
+            _openFiles = new ConcurentSet<MpqFileStream>();
+            _compactCallbacks = new List<MpqArchiveCompactingEventHandler>();
 
             _accessType = accessType;
             SFileOpenArchiveFlags flags = SFileOpenArchiveFlags.TypeIsFile;

@@ -91,21 +91,17 @@ namespace WoWFormatParser.Serializer
         private void Save(string json, string name)
         {
             string filename = Path.Combine(Options.OutputDirectory, name + ".json");
-            using (FileStream fs = new FileStream(filename, FileMode.Create))
-            {
-                byte[] buffer = Encoding.UTF8.GetBytes(json);
-                fs.Write(buffer, 0, buffer.Length);
-                fs.Flush();
-            }
+            using FileStream fs = new FileStream(filename, FileMode.Create);
+            byte[] buffer = Encoding.UTF8.GetBytes(json);
+            fs.Write(buffer, 0, buffer.Length);
+            fs.Flush();
         }
 
         private void Save(MemoryStream ms, string filename)
         {
-            using (FileStream fs = new FileStream(filename, FileMode.Create))
-            {
-                ms.CopyTo(fs);
-                fs.Flush();
-            }
+            using FileStream fs = new FileStream(filename, FileMode.Create);
+            ms.CopyTo(fs);
+            fs.Flush();
         }
         #endregion
 
@@ -114,34 +110,30 @@ namespace WoWFormatParser.Serializer
         {
             string filename = Path.Combine(Options.OutputDirectory, name + ".gz");
 
-            using (MemoryStream ms = new MemoryStream())
-            using (GZipStream gzip = new GZipStream(ms, CompressionLevel.Fastest))
-            {
-                byte[] buffer = Encoding.UTF8.GetBytes(json);
-                gzip.Write(buffer, 0, buffer.Length);
+            using MemoryStream ms = new MemoryStream();
+            using GZipStream gzip = new GZipStream(ms, CompressionLevel.Fastest);
+            byte[] buffer = Encoding.UTF8.GetBytes(json);
+            gzip.Write(buffer, 0, buffer.Length);
 
-                if (export)
-                    Save(ms, filename);
+            if (export)
+                Save(ms, filename);
 
-                return ms.ToArray();
-            }
+            return ms.ToArray();
         }
 
         private byte[] BrotliCompress(string json, string name = "", bool export = false)
         {
             string filename = Path.Combine(Options.OutputDirectory, name + ".brot");
 
-            using (MemoryStream ms = new MemoryStream())
-            using (BrotliStream brotli = new BrotliStream(ms, CompressionLevel.Fastest))
-            {
-                byte[] buffer = Encoding.UTF8.GetBytes(json);
-                brotli.Write(buffer, 0, buffer.Length);
+            using MemoryStream ms = new MemoryStream();
+            using BrotliStream brotli = new BrotliStream(ms, CompressionLevel.Fastest);
+            byte[] buffer = Encoding.UTF8.GetBytes(json);
+            brotli.Write(buffer, 0, buffer.Length);
 
-                if (export)
-                    Save(ms, filename);
+            if (export)
+                Save(ms, filename);
 
-                return ms.ToArray();
-            }
+            return ms.ToArray();
         }
         #endregion
     }

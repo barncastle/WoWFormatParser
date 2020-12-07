@@ -68,7 +68,7 @@ namespace WoWFormatParser.Structures.WMO
                         break;
                     case "MOGP":
                         Version = Version == 0 ? GetVersion(build) : Version;
-                        ReadHeader(br, build);
+                        ReadHeader(br);
                         continue;
                     case "MOPY":
                         Polygons = br.ReadArray(Size / MOPY.GetSize(Version), () => new MOPY(br, Version));
@@ -145,7 +145,7 @@ namespace WoWFormatParser.Structures.WMO
                 Liquids = _Liquids;
         }
 
-        private void ReadHeader(BinaryReader br, uint build)
+        private void ReadHeader(BinaryReader br)
         {
             GroupName = br.ReadUInt32();
             DbgName = br.ReadUInt32();

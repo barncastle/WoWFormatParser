@@ -6,7 +6,7 @@ namespace WoWFormatParser.Helpers
 {
     internal static class SizeCache
     {
-        private static ConcurrentDictionary<Type, int> _sizeCache = new ConcurrentDictionary<Type, int>();
+        private static readonly ConcurrentDictionary<Type, int> _sizeCache = new ConcurrentDictionary<Type, int>();
 
         public static int GetSize<T>() where T : struct
         {

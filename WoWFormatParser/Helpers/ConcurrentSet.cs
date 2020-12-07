@@ -8,7 +8,7 @@ namespace WoWFormatParser.Helpers
     internal class ConcurentSet<T> : ISet<T>, IEnumerable<T>
     {
         private static readonly T[] emptyData = { };
-        private HashSet<T> Set;
+        private readonly HashSet<T> Set;
         private T[] safeCached;
 
         public ConcurentSet()

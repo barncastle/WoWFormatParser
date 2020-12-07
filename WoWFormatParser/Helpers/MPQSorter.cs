@@ -72,7 +72,7 @@ namespace WoWFormatParser.Helpers
                 IsLocale = Name.Contains("locale") || Name.Contains("speech") || Name.Contains("base");
                 IsPatch = Name.Contains("patch");
                 PatchIndex = Name.IndexOf("patch", StringComparison.Ordinal);
-                PatchNum = Name.Substring(PatchIndex + 6);
+                PatchNum = Name[(PatchIndex + 6)..];
                 ExtIndex = Name.LastIndexOf('.');
             }
         }

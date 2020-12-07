@@ -9,7 +9,7 @@ namespace WoWFormatParser.Structures.WMO
         public ushort PortalIndex;
         public ushort GroupIndex;
         public short Side;
-        private ushort Filler;
+        private readonly ushort Filler;
 
         public override string ToString() => $"PortalIndex: {PortalIndex}, GroupIndex: {GroupIndex}, Side: {Side}";
     }

@@ -17,7 +17,7 @@ namespace WoWFormatParser
 
         private readonly DirectoryReader _directoryReader;
         private readonly MPQReader _mpqReader;
-        private const StringComparison _comparison = StringComparison.OrdinalIgnoreCase;
+        private const StringComparison Comparison = StringComparison.OrdinalIgnoreCase;
 
         public WoWFormatParser(string directory, WoWBuild build, Options options = null)
         {
@@ -32,7 +32,7 @@ namespace WoWFormatParser
             Options = options ?? new Options();
 
             _directoryReader = new DirectoryReader(Directory, Options, Build);
-            _mpqReader = new MPQReader(Directory, Options, Build, _directoryReader.GetPatchArchives());
+            _mpqReader = new MPQReader(Options, Build, _directoryReader.GetPatchArchives());
         }
 
 
@@ -44,7 +44,7 @@ namespace WoWFormatParser
         /// <returns></returns>
         public IEnumerable<IFormat> EnumerateDirectory(string searchPattern = "*", bool useParallelization = true)
         {
-            return _directoryReader.Enumerate(searchPattern);
+            return _directoryReader.Enumerate(searchPattern, useParallelization);
         }
         /// <summary>
         /// Parses files found in the WoW archives.
@@ -135,7 +135,7 @@ namespace WoWFormatParser
             if (includeFileSystemPath)
                 return files;
 
-            return files.Select(x => x.Replace(localDir, "", _comparison));
+            return files.Select(x => x.Replace(localDir, "", Comparison));
         }
         /// <summary>
         /// Returns a list of filenames from the WoW archives.
@@ -161,7 +161,7 @@ namespace WoWFormatParser
             if (includeFileSystemPath)
                 return files;
 
-            return files.Select(x => x.Replace(localDir, "", _comparison));
+            return files.Select(x => x.Replace(localDir, "", Comparison));
         }
         #endregion
 
