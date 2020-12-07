@@ -6,13 +6,20 @@ namespace WoWFormatParser.Structures.WDT
 {
     public class MAIN
     {
+        public int Offset;
+        public int Size;
         public MAIN_Flags Flags;
-        public uint AsyncId;
 
-        public MAIN(BinaryReader br)
+        public MAIN(BinaryReader br, uint build)
         {
+            if(build <  3592)
+            {
+                Offset = br.ReadInt32();
+                Size = br.ReadInt32();
+            }
+
             Flags = br.ReadEnum<MAIN_Flags>();
-            AsyncId = br.ReadUInt32();
+            br.ReadUInt32(); // AsyncId
         }
     }
 

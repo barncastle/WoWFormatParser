@@ -44,19 +44,19 @@ namespace WoWFormatParser
                 { WoWFormat.LIT, ReadFormat<Structures.LIT.LIT> },
                 { WoWFormat.M2, ReadFormat<Structures.M2.M2> },
                 { WoWFormat.WDL, ReadFormat<Structures.WDL.WDL> },
-                { WoWFormat.WDT, ReadFormat<Structures.WDT.WDT> },
                 { WoWFormat.WLQ, ReadFormat<Structures.WLX.WLQ> },
                 { WoWFormat.WLX, ReadFormat<Structures.WLX.WLX> },
 
+                { WoWFormat.WDT, ReadVersioned<Structures.WDT.WDT> },
+                { WoWFormat.WDTADT, ReadVersioned<Structures.WDT.WDT> },
                 { WoWFormat.ADT, ReadVersioned<Structures.ADT.ADT> },
-                { WoWFormat.WDTADT, ReadVersioned<Structures.ADT.ADT> },
                 { WoWFormat.WMO, ReadVersioned<Structures.WMO.WMO> },
                 { WoWFormat.WMOGROUP, ReadVersioned<Structures.WMO.WMOGroup> },
             };
         }
 
         #region Read Methods
-        public IFormat Read(string filename, uint build = 0)
+        public IFormat Read(string filename)
         {
             var entry = new Structures.Meta.FileInfo()
             {
@@ -64,18 +64,16 @@ namespace WoWFormatParser
                 Name = filename.WoWNormalize()
             };
 
-            using (var md5 = MD5.Create())
-            using (var stream = File.OpenRead(filename))
+            using var md5 = MD5.Create();
+            using var stream = File.OpenRead(filename);
+            if (_readFileInfo)
             {
-                if (_readFileInfo)
-                {
-                    entry.Checksum = md5.ComputeHash(stream).ToChecksum();
-                    entry.Created = Utils.GetLocalFileCreated(filename);
-                    entry.Size = (uint)stream.Length;
-                }
-
-                return Read(stream, entry);
+                entry.Checksum = md5.ComputeHash(stream).ToChecksum();
+                entry.Created = Utils.GetLocalFileCreated(filename);
+                entry.Size = (uint)stream.Length;
             }
+
+            return Read(stream, entry);
         }
 
         public IFormat Read(Stream stream, Structures.Meta.FileInfo file)
@@ -100,15 +98,13 @@ namespace WoWFormatParser
         {
             if (stream.CanRead)
             {
-                using (var br = new BinaryReader(stream))
-                {
-                    T chunked = (T)Activator.CreateInstance(typeof(T), br, Build.Build);
-                    chunked.FileName = file.Name;
-                    if (_readFileInfo)
-                        chunked.FileInfo = file;
+                using var br = new BinaryReader(stream);
+                T chunked = (T)Activator.CreateInstance(typeof(T), br, Build.Build);
+                chunked.FileName = file.Name;
+                if (_readFileInfo)
+                    chunked.FileInfo = file;
 
-                    return chunked;
-                }
+                return chunked;
             }
 
             return ReadSimple(file);
@@ -118,15 +114,13 @@ namespace WoWFormatParser
         {
             if (stream.CanRead)
             {
-                using (var br = new BinaryReader(stream))
-                {
-                    T format = (T)Activator.CreateInstance(typeof(T), br);
-                    format.FileName = file.Name;
-                    if (_readFileInfo)
-                        format.FileInfo = file;
+                using var br = new BinaryReader(stream);
+                T format = (T)Activator.CreateInstance(typeof(T), br);
+                format.FileName = file.Name;
+                if (_readFileInfo)
+                    format.FileInfo = file;
 
-                    return format;
-                }
+                return format;
             }
 
             return ReadSimple(file);

@@ -118,9 +118,8 @@ namespace WoWFormatParser.Structures.WMO
             br.BaseStream.Position -= 8;
 
             // pass into the WMOGroup reader
-            using (var ms = new MemoryStream(br.ReadBytes(size + 8)))
-            using (var subbr = new BinaryReader(ms))
-                return new WMOGroup(subbr, build);
+            using var stream = new SubStream(br.BaseStream, size + 8);
+            return new WMOGroup(stream.GetBinaryReader(), build);
         }
     }
 }

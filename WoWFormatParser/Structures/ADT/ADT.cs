@@ -13,9 +13,6 @@ namespace WoWFormatParser.Structures.ADT
         private readonly bool IsAlphaFormat = false;
 
         public uint Version;
-        public MPHD WorldMapHeader;
-        public MAIN[,] AreaInfo;
-        public string[] DoodadFileNames;
         public string[] WorldModelFileNames;
         public string[] TextureFileNames;
         public string[] ModelFileNames;
@@ -44,17 +41,6 @@ namespace WoWFormatParser.Structures.ADT
                     case "MVER":
                         Version = br.ReadUInt32();
                         break;
-                    case "MPHD":
-                        WorldMapHeader = br.ReadStruct<MPHD>();
-                        br.BaseStream.Position += 112; // padding
-                        break;
-                    case "MAIN":
-                        AreaInfo = br.ReadJaggedArray(64, 64, () => br.ReadStruct<MAIN>());
-                        break;
-                    case "MDNM":
-                        DoodadFileNames = br.ReadString(Size).Split('\0', StringSplitOptions.RemoveEmptyEntries);
-                        break;
-                    case "MONM":
                     case "MWMO":
                         WorldModelFileNames = br.ReadString(Size).Split('\0', StringSplitOptions.RemoveEmptyEntries);
                         break;
