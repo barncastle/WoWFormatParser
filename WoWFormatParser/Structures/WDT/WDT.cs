@@ -82,7 +82,7 @@ namespace WoWFormatParser.Structures.WDT
 
         private long GetADTSize(BinaryReader br)
         {
-            int offset = (int)br.BaseStream.Position;
+            var offset = br.BaseStream.Position;
 
             for (var x = 0; x < AreaInfo.GetLength(0); x++)
                 for (var y = 0; y < AreaInfo.GetLength(1); y++)
