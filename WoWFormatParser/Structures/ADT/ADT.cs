@@ -89,9 +89,12 @@ namespace WoWFormatParser.Structures.ADT
             {
                 if (!IsAlphaFormat)
                 {
-                    while (br.BaseStream.Position < length)
+                    do
+                    {
                         if (br.ReadIffChunk().Size > 0)
                             throw new UnreadContentException();
+                    }
+                    while (br.BaseStream.Position < length);
                 }
                 else
                 {

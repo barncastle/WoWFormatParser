@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WoWFormatParser.Helpers
 {
-    public class SubStream : Stream
+    internal class SubStream : Stream
     {
         public override bool CanRead => BaseStream.CanRead;
         public override bool CanSeek => BaseStream.CanSeek;
@@ -23,7 +23,7 @@ namespace WoWFormatParser.Helpers
             }
         }
 
-        private readonly Stream BaseStream;
+        public readonly Stream BaseStream;
         private readonly long Start;
         private readonly long End;
 

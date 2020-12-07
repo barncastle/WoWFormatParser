@@ -189,6 +189,10 @@ namespace WoWFormatParser.Helpers
                 if (bufferedStream.UnderlyingStream is MpqFileStream underlyingStream)
                     return underlyingStream.FileName;
 
+            if(br.BaseStream is SubStream subStream)
+                if (subStream.BaseStream is MpqFileStream underlyingStream)
+                    return underlyingStream.FileName;
+
             return "";
         }
 
