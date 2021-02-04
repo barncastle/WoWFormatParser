@@ -33,7 +33,7 @@ namespace WoWFormatParser.Structures.WDL
                         Version = br.ReadUInt32();
                         break;
                     case "MWMO":
-                        MapWorldModelObjects = br.ReadString(Size).Split('\0', StringSplitOptions.RemoveEmptyEntries);
+                        MapWorldModelObjects = br.ReadString(Size).Split('\0');
                         break;
                     case "MWID":
                         WorldModelObjectFilenameIndices = br.ReadStructArray<uint>(Size / 4);

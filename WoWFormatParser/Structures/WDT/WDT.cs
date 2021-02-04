@@ -15,7 +15,7 @@ namespace WoWFormatParser.Structures.WDT
         public uint Version;
         public MPHD[] MapHeader;
         public MAIN[,] AreaInfo;
-        public MODF[] MapObjDefinitions;
+        public MODF MapObjDefinition;
         public string[] WorldModelFileNames;
         public string[] DoodadFileNames;
         public ADT.ADT[] Tiles;
@@ -44,14 +44,14 @@ namespace WoWFormatParser.Structures.WDT
                         AreaInfo = br.ReadJaggedArray(64, 64, () => new MAIN(br, build));
                         break;
                     case "MODF":
-                        MapObjDefinitions = br.ReadArray(Size / 64, () => new MODF(br));
+                        MapObjDefinition = new MODF(br);
                         break;
                     case "MONM":
                     case "MWMO":
-                        WorldModelFileNames = br.ReadString(Size).Split('\0', StringSplitOptions.RemoveEmptyEntries);
+                        WorldModelFileNames = br.ReadString(Size).Split('\0');
                         break;
                     case "MDNM":
-                        DoodadFileNames = br.ReadString(Size).Split('\0', StringSplitOptions.RemoveEmptyEntries);
+                        DoodadFileNames = br.ReadString(Size).Split('\0');
                         break;
                     case "MHDR":
                         _Tiles.Add(ReadTile(br, build));
@@ -67,17 +67,24 @@ namespace WoWFormatParser.Structures.WDT
             Tiles = _Tiles.ToArray();
         }
 
+        public ADT.ADT GetTile(MAIN areaInfo)
+        {
+            return Tiles?.Length > 0 ? 
+                Array.Find(Tiles, t => t.Offset == areaInfo.Offset) : null;
+        }
+
         private ADT.ADT ReadTile(BinaryReader br, uint build)
         {
             // reset offset
             br.BaseStream.Position -= 8;
 
             // calculate total ADT size
+            var offset = br.BaseStream.Position;
             var size = GetADTSize(br);
 
             // pass into the ADT reader
             using var stream = new SubStream(br.BaseStream, size);
-            return new ADT.ADT(stream.GetBinaryReader(), build);
+            return new ADT.ADT(stream.GetBinaryReader(), build, offset);
         }
 
         private long GetADTSize(BinaryReader br)

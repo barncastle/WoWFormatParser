@@ -24,7 +24,7 @@ namespace WoWFormatParser.Structures.WMO
 
             // HACK
             LiquidVertexList = br.ReadJaggedArray(VertexCount.x, VertexCount.y, () => br.ReadStruct<SMOLVert>());
-            LiquidTileList = br.ReadJaggedArray(TileCount.x, TileCount.y, () => new SMOLTile(br));
+            LiquidTileList = br.ReadJaggedArray(TileCount.x, TileCount.y, () => br.ReadStruct<SMOLTile>());
         }
     }
 
@@ -59,20 +59,14 @@ namespace WoWFormatParser.Structures.WMO
         public override string ToString() => $"S: {S}, T: {T}, Height: {Height}";
     }
 
-    public class SMOLTile : IStringDescriptor
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct SMOLTile : IStringDescriptor
     {
-        public byte Liquid;
-        public bool Fishable;
-        public bool Shared;
+        public readonly byte Value;
 
-        public SMOLTile(BinaryReader br)
-        {
-            byte data = br.ReadByte();
-
-            Liquid = (byte)(data & ~0xC0);
-            Fishable = (data & 0x40) == 0x40;
-            Shared = (data & 0x80) == 0x80;
-        }
+        public byte Liquid => (byte)(Value & ~0xC0);
+        public bool Fishable => (Value & 0x40) == 0x40;
+        public bool Shared => (Value & 0x80) == 0x80;
 
         public override string ToString() => $"Liquid: {Liquid}, Fishable: {Fishable}, Shared: {Shared}";
     }

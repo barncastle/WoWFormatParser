@@ -50,16 +50,16 @@ namespace WoWFormatParser.Structures.WMO
                         MapObjectHeader = new MOHD(br, Version);
                         break;
                     case "MOTX":
-                        TextureFileNames = br.ReadString(Size).Split('\0', StringSplitOptions.RemoveEmptyEntries);
+                        TextureFileNames = br.ReadString(Size).Split('\0');
                         break;
                     case "MOSB":
-                        SkyboxFileNames = br.ReadString(Size).Split('\0', StringSplitOptions.RemoveEmptyEntries);
+                        SkyboxFileNames = br.ReadString(Size).Split('\0');
                         break;
                     case "MOGN":
-                        GroupNames = br.ReadString(Size).Split('\0', StringSplitOptions.RemoveEmptyEntries);
+                        GroupNames = br.ReadString(Size).Split('\0');
                         break;
                     case "MODN":
-                        DoodadFileNames = br.ReadString(Size).Split('\0', StringSplitOptions.RemoveEmptyEntries);
+                        DoodadFileNames = br.ReadString(Size).Split('\0');
                         break;
                     case "MOMT":
                         Materials = br.ReadArray(Size / MOMT.GetSize(Version), () => new MOMT(br, Version));

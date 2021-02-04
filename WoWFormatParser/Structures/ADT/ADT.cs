@@ -11,6 +11,8 @@ namespace WoWFormatParser.Structures.ADT
     {
         [JsonIgnore]
         private readonly bool IsAlphaFormat = false;
+        [JsonIgnore]
+        internal readonly long Offset;
 
         public uint Version;
         public string[] WorldModelFileNames;
@@ -24,9 +26,10 @@ namespace WoWFormatParser.Structures.ADT
         public MCIN[,] ChunkInfo;
         public IReadOnlyList<MCNK> MapChunks;
 
-        public ADT(BinaryReader br, uint build)
+        public ADT(BinaryReader br, uint build, long offset = 0)
         {
             IsAlphaFormat = build < 3592;
+            Offset = offset;
 
             List<MCNK> _MapChunks = new List<MCNK>();
 
@@ -42,13 +45,13 @@ namespace WoWFormatParser.Structures.ADT
                         Version = br.ReadUInt32();
                         break;
                     case "MWMO":
-                        WorldModelFileNames = br.ReadString(Size).Split('\0', StringSplitOptions.RemoveEmptyEntries);
+                        WorldModelFileNames = br.ReadString(Size).Split('\0');
                         break;
                     case "MTEX":
-                        TextureFileNames = br.ReadString(Size).Split('\0', StringSplitOptions.RemoveEmptyEntries);
+                        TextureFileNames = br.ReadString(Size).Split('\0');
                         break;
                     case "MMDX":
-                        ModelFileNames = br.ReadString(Size).Split('\0', StringSplitOptions.RemoveEmptyEntries);
+                        ModelFileNames = br.ReadString(Size).Split('\0');
                         break;
                     case "MMID":
                         ModelFileNameIndices = br.ReadStructArray<uint>(Size / 4);
@@ -81,7 +84,6 @@ namespace WoWFormatParser.Structures.ADT
             if (_MapChunks.Count > 0)
                 MapChunks = _MapChunks;
         }
-
 
         private void ValidateIsRead(BinaryReader br, long length)
         {

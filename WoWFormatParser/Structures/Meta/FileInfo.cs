@@ -31,16 +31,13 @@ namespace WoWFormatParser.Structures.Meta
             if (Enum.TryParse<WoWFormat>(_name.GetExtensionExt(), true, out var format))
                 Format = format;
 
-            string fileending = Path.GetFileNameWithoutExtension(_name).Split("_").Last();
+            string fileending = Path.GetFileNameWithoutExtension(_name).Split("_")[^1];
 
             // overrides
             switch (Format)
             {
-                case WoWFormat.WMO:
-                    if (ushort.TryParse(fileending, out ushort wmogroup))
-                    {
-                        format = WoWFormat.WMOGROUP;
-                    }
+                case WoWFormat.WMO when ushort.TryParse(fileending, out _):
+                    Format = WoWFormat.WMOGROUP;
                     break;
                 case WoWFormat.ADT:
                     switch (fileending)
