@@ -11,23 +11,19 @@ namespace WoWFormatParser.Structures.Common
 
         public C4Vector GetC4Vector()
         {
-            const double multiplier = 0.00000095367432;
+            const float multiplier = 0.00000095367432f;
 
             C4Vector vector = new C4Vector
             {
-                X = (float)((Value >> 42) * (multiplier / 2.0)),
-                Y = (float)(((Value << 22) >> 43) * multiplier),
-                Z = (float)((Value & 0x1FFFFF) * multiplier)
+                X = (Value >> 42) * (multiplier / 2f),
+                Y = ((Value << 22) >> 43) * multiplier,
+                Z = ((int)(Value << 11) >> 11) * multiplier
             };
 
             // calculate W
-            double len = vector.X * vector.X + vector.Y * vector.Y + vector.Z * vector.Z;
-            if (Math.Abs(len - 1.0) >= multiplier)
-            {
-                double w = 1.0 - len;
-                if (w >= 0)
-                    vector.W = (float)Math.Sqrt(w);
-            }
+            var len = 1.0f - (vector.X * vector.X + vector.Y * vector.Y + vector.Z * vector.Z);
+            if (len >= multiplier)
+                vector.W = (float)Math.Sqrt(len);
 
             return vector;
         }
