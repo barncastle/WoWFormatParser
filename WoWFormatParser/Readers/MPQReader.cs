@@ -108,7 +108,7 @@ namespace WoWFormatParser.Readers
         {
             using var md5 = MD5.Create();
             using var stream = mpq.OpenFile(overridename ?? filename);
-            if (!stream.CanRead || stream.Length <= 1)
+            if (stream == null || !stream.CanRead || stream.Length <= 1)
                 return null;
 
             // validate filesize limit
@@ -193,13 +193,16 @@ namespace WoWFormatParser.Readers
         private IEnumerable<string> FilterListFile(MpqArchive mpq, string searchPattern)
         {
             using var file = mpq.OpenFile(LISTFILE_NAME);
-            using var sr = new StreamReader(file);
-            while (!sr.EndOfStream)
+            if (file != null)
             {
-                string filename = sr.ReadLine();
-                if (!Utils.IsInvalidFile(filename, _options, searchPattern))
-                    yield return filename;
-            }
+                using var sr = new StreamReader(file);
+                while (!sr.EndOfStream)
+                {
+                    string filename = sr.ReadLine();
+                    if (!Utils.IsInvalidFile(filename, _options, searchPattern))
+                        yield return filename;
+                }
+            }            
         }
 
 

@@ -199,7 +199,7 @@ namespace WoWFormatParser.Archives.MPQ
             VerifyHandle();
 
             if (!NativeMethods.SFileOpenFileEx(_handle, fileName, 0, out MpqFileSafeHandle fileHandle))
-                throw new Win32Exception();
+                return null;
 
             MpqFileStream fs = new MpqFileStream(fileHandle, _accessType, this, fileName);
             _openFiles.Add(fs);
